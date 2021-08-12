@@ -160,7 +160,7 @@ describe('#Electrumx', () => {
     })
 
     it('should detect a network mismatch', async () => {
-      req.params.address = 'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+      req.params.address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       const result = await electrumxRoute.getBalance(req, res)
       // console.log(`result: ${util.inspect(result)}`)
@@ -177,7 +177,7 @@ describe('#Electrumx', () => {
     it('should pass errors from electrum-cash to user', async () => {
       // Address has invalid checksum.
       req.params.address =
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
 
       // Call the details API.
       const result = await electrumxRoute.getBalance(req, res)
@@ -192,7 +192,7 @@ describe('#Electrumx', () => {
 
     it('should get balance for a single address', async () => {
       req.params.address =
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -277,7 +277,7 @@ describe('#Electrumx', () => {
 
     it('should detect a network mismatch', async () => {
       req.body.addresses = [
-        'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
       ]
 
       const result = await electrumxRoute.balanceBulk(req, res)
@@ -295,7 +295,7 @@ describe('#Electrumx', () => {
     it('should pass errors from electrum-cash to user', async () => {
       // Address has invalid checksum.
       req.body.addresses = [
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
       ]
 
       // Call the details API.
@@ -310,8 +310,8 @@ describe('#Electrumx', () => {
     })
     it('should handle error', async () => {
       req.body.addresses = [
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7',
-        'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA',
+        'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
       ]
       // Force error
       sandbox.stub(electrumxRoute.axios, 'post').throws(new Error('Test error'))
@@ -328,8 +328,8 @@ describe('#Electrumx', () => {
     })
     it('should get balance for an array of addresses', async () => {
       req.body.addresses = [
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7',
-        'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA',
+        'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
       ]
 
       // Mock unit tests to prevent live network calls.
@@ -401,7 +401,7 @@ describe('#Electrumx', () => {
     })
 
     it('should detect a network mismatch', async () => {
-      req.params.address = 'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+      req.params.address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       const result = await electrumxRoute.getUtxos(req, res)
       // console.log(`result: ${util.inspect(result)}`)
@@ -418,7 +418,7 @@ describe('#Electrumx', () => {
     it('should pass errors from electrum-cash to user', async () => {
       // Address has invalid checksum.
       req.params.address =
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
 
       // Call the details API.
       const result = await electrumxRoute.getUtxos(req, res)
@@ -433,7 +433,7 @@ describe('#Electrumx', () => {
 
     it('should get utxos for a single address', async () => {
       req.params.address =
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -523,7 +523,7 @@ describe('#Electrumx', () => {
 
     it('should detect a network mismatch', async () => {
       req.body.addresses = [
-        'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
       ]
 
       const result = await electrumxRoute.utxosBulk(req, res)
@@ -541,7 +541,7 @@ describe('#Electrumx', () => {
     it('should pass errors from electrum-cash to user', async () => {
       // Address has invalid checksum.
       req.body.addresses = [
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
       ]
 
       // Call the details API.
@@ -556,8 +556,8 @@ describe('#Electrumx', () => {
     })
     it('should handle error', async () => {
       req.body.addresses = [
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7',
-        'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA',
+        'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
       ]
       // Force error
       sandbox.stub(electrumxRoute.axios, 'post').throws(new Error('Test error'))
@@ -574,8 +574,8 @@ describe('#Electrumx', () => {
     })
     it('should get utxos for an array of addresses', async () => {
       req.body.addresses = [
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7',
-        'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA',
+        'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
       ]
 
       // Mock unit tests to prevent live network calls.
@@ -1147,7 +1147,7 @@ describe('#Electrumx', () => {
     })
 
     it('should detect a network mismatch', async () => {
-      req.params.address = 'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+      req.params.address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       const result = await electrumxRoute.getTransactions(req, res)
       // console.log(`result: ${util.inspect(result)}`)
@@ -1164,7 +1164,7 @@ describe('#Electrumx', () => {
     it('should pass errors from electrum-cash to user', async () => {
       // Address has invalid checksum.
       req.params.address =
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
 
       // Call the details API.
       const result = await electrumxRoute.getTransactions(req, res)
@@ -1179,7 +1179,7 @@ describe('#Electrumx', () => {
 
     it('should get transaction for a single address', async () => {
       req.params.address =
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -1266,7 +1266,7 @@ describe('#Electrumx', () => {
 
     it('should detect a network mismatch', async () => {
       req.body.addresses = [
-        'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
       ]
 
       const result = await electrumxRoute.transactionsBulk(req, res)
@@ -1284,7 +1284,7 @@ describe('#Electrumx', () => {
     it('should pass errors from electrum-cash to user', async () => {
       // Address has invalid checksum.
       req.body.addresses = [
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
       ]
 
       // Call the details API.
@@ -1299,8 +1299,8 @@ describe('#Electrumx', () => {
     })
     it('should handle error', async () => {
       req.body.addresses = [
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7',
-        'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA',
+        'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
       ]
       // Force error
       sandbox.stub(electrumxRoute.axios, 'post').throws(new Error('Test error'))
@@ -1317,8 +1317,8 @@ describe('#Electrumx', () => {
     })
     it('should get transaction for an array of addresses', async () => {
       req.body.addresses = [
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7',
-        'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA',
+        'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
       ]
 
       // Mock unit tests to prevent live network calls.
@@ -1392,7 +1392,7 @@ describe('#Electrumx', () => {
     })
 
     it('should detect a network mismatch', async () => {
-      req.params.address = 'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+      req.params.address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       const result = await electrumxRoute.getMempool(req, res)
       // console.log(`result: ${util.inspect(result)}`)
@@ -1409,7 +1409,7 @@ describe('#Electrumx', () => {
     it('should pass errors from electrum-cash to user', async () => {
       // Address has invalid checksum.
       req.params.address =
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
 
       // Call the details API.
       const result = await electrumxRoute.getMempool(req, res)
@@ -1424,7 +1424,7 @@ describe('#Electrumx', () => {
 
     it('should get mempool for a single address', async () => {
       req.params.address =
-        'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+        'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -1508,7 +1508,7 @@ describe('#Electrumx', () => {
 
     it('should detect a network mismatch', async () => {
       req.body.addresses = [
-        'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
       ]
 
       const result = await electrumxRoute.mempoolBulk(req, res)
@@ -1526,7 +1526,7 @@ describe('#Electrumx', () => {
     it('should pass errors from electrum-cash to user', async () => {
       // Address has invalid checksum.
       req.body.addresses = [
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
       ]
 
       // Call the details API.
@@ -1541,8 +1541,8 @@ describe('#Electrumx', () => {
     })
     it('should handle error', async () => {
       req.body.addresses = [
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7',
-        'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA',
+        'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
       ]
       // Force error
       sandbox.stub(electrumxRoute.axios, 'post').throws(new Error('Test error'))
@@ -1559,8 +1559,8 @@ describe('#Electrumx', () => {
     })
     it('should get mempool for multiple addresses', async () => {
       req.body.addresses = [
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7',
-        'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+        'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA',
+        'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
       ]
 
       // Mock unit tests to prevent live network calls.
@@ -1592,7 +1592,7 @@ describe('#Electrumx', () => {
   //   it('should throw error for invalid address', async () => {
   //     try {
   //       // Address has invalid checksum.
-  //       const address = 'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+  //       const address = 'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
   //
   //       // Call the details API.
   //       await electrumxRoute._utxosFromElectrumx(address)
@@ -1623,7 +1623,7 @@ describe('#Electrumx', () => {
   //   })
   //
   //   it('should get balance for a single address', async () => {
-  //     const address = 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+  //     const address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
   //
   //     // Mock unit tests to prevent live network calls.
   //     if (process.env.TEST === 'unit') {
@@ -1691,7 +1691,7 @@ describe('#Electrumx', () => {
   //   })
   //
   //   it('should detect a network mismatch', async () => {
-  //     req.params.address = 'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+  //     req.params.address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
   //
   //     const result = await electrumxRoute.getUtxos(req, res)
   //     // console.log(`result: ${util.inspect(result)}`)
@@ -1708,7 +1708,7 @@ describe('#Electrumx', () => {
   //   it('should pass errors from ElectrumX to user', async () => {
   //     // Address has invalid checksum.
   //     req.params.address =
-  //       'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+  //       'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
   //
   //     // Mock unit tests to prevent live network calls.
   //     if (process.env.TEST === 'unit') {
@@ -1732,7 +1732,7 @@ describe('#Electrumx', () => {
   //
   //   it('should get balance for a single address', async () => {
   //     req.params.address =
-  //       'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+  //       'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
   //
   //     // Mock unit tests to prevent live network calls.
   //     if (process.env.TEST === 'unit') {
@@ -1820,7 +1820,7 @@ describe('#Electrumx', () => {
   //
   //   it('should detect a network mismatch', async () => {
   //     req.body = {
-  //       addresses: ['bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4']
+  //       addresses: ['lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA']
   //     }
   //
   //     const result = await electrumxRoute.utxosBulk(req, res)
@@ -1832,7 +1832,7 @@ describe('#Electrumx', () => {
   //
   //   it('should get details for a single address', async () => {
   //     req.body = {
-  //       addresses: ['bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7']
+  //       addresses: ['lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA']
   //     }
   //
   //     // Mock the Insight URL for unit tests.
@@ -1867,8 +1867,8 @@ describe('#Electrumx', () => {
   //   it('should get utxos for multiple addresses', async () => {
   //     req.body = {
   //       addresses: [
-  //         'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf',
-  //         'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+  //         'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq',
+  //         'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
   //       ]
   //     }
   //
@@ -2444,7 +2444,7 @@ describe('#Electrumx', () => {
   //   it('should throw error for invalid address', async () => {
   //     try {
   //       // Address has invalid checksum.
-  //       const address = 'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+  //       const address = 'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
   //
   //       // Mock unit tests to prevent live network calls.
   //       // if (process.env.TEST === 'unit') {
@@ -2466,7 +2466,7 @@ describe('#Electrumx', () => {
   //   })
   //
   //   it('should get balance for a single address', async () => {
-  //     const address = 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+  //     const address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
   //
   //     // Mock unit tests to prevent live network calls.
   //     if (process.env.TEST === 'unit') {
@@ -2486,7 +2486,7 @@ describe('#Electrumx', () => {
   //   })
   //
   //   it('should get balance for an address with no transaction history', async () => {
-  //     const address = 'bitcoincash:qp2ew6pvrs22jtsvtjyumjgas6jkvgn2hy3ad4wpw8'
+  //     const address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
   //
   //     // Mock unit tests to prevent live network calls.
   //     if (process.env.TEST === 'unit') {
@@ -2566,7 +2566,7 @@ describe('#Electrumx', () => {
   //
   //   it('should detect a network mismatch', async () => {
   //     req.body = {
-  //       addresses: ['bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4']
+  //       addresses: ['lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA']
   //     }
   //
   //     const result = await electrumxRoute.balanceBulk(req, res)
@@ -2578,7 +2578,7 @@ describe('#Electrumx', () => {
   //
   //   it('should get details for a single address', async () => {
   //     req.body = {
-  //       addresses: ['bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7']
+  //       addresses: ['lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA']
   //     }
   //
   //     // Mock the Insight URL for unit tests.
@@ -2610,8 +2610,8 @@ describe('#Electrumx', () => {
   //   it('should get utxos for multiple addresses', async () => {
   //     req.body = {
   //       addresses: [
-  //         'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf',
-  //         'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+  //         'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq',
+  //         'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
   //       ]
   //     }
   //
@@ -2640,7 +2640,7 @@ describe('#Electrumx', () => {
   //   it('should throw error for invalid address', async () => {
   //     try {
   //       // Address has invalid checksum.
-  //       const address = 'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+  //       const address = 'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
   //
   //       // Call the details API.
   //       await electrumxRoute._transactionsFromElectrumx(address)
@@ -2653,7 +2653,7 @@ describe('#Electrumx', () => {
   //   })
   //
   //   it('should get transaction history for a single address', async () => {
-  //     const address = 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+  //     const address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
   //
   //     // Mock unit tests to prevent live network calls.
   //     if (process.env.TEST === 'unit') {
@@ -2674,7 +2674,7 @@ describe('#Electrumx', () => {
   //   })
   //
   //   it('should get history for an address with no transaction history', async () => {
-  //     const address = 'bitcoincash:qp2ew6pvrs22jtsvtjyumjgas6jkvgn2hy3ad4wpw8'
+  //     const address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
   //
   //     // Mock unit tests to prevent live network calls.
   //     if (process.env.TEST === 'unit') {
@@ -2737,7 +2737,7 @@ describe('#Electrumx', () => {
   //   })
   //
   //   it('should detect a network mismatch', async () => {
-  //     req.params.address = 'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+  //     req.params.address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
   //
   //     const result = await electrumxRoute.getTransactions(req, res)
   //     // console.log(`result: ${util.inspect(result)}`)
@@ -2754,7 +2754,7 @@ describe('#Electrumx', () => {
   //   it('should pass errors from ElectrumX to user', async () => {
   //     // Address has invalid checksum.
   //     req.params.address =
-  //       'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+  //       'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
   //
   //     // Call the details API.
   //     const result = await electrumxRoute.getTransactions(req, res)
@@ -2769,7 +2769,7 @@ describe('#Electrumx', () => {
   //
   //   it('should get transactions for a single address', async () => {
   //     req.params.address =
-  //       'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+  //       'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
   //
   //     // Mock unit tests to prevent live network calls.
   //     if (process.env.TEST === 'unit') {
@@ -2854,7 +2854,7 @@ describe('#Electrumx', () => {
   //
   //   it('should detect a network mismatch', async () => {
   //     req.body = {
-  //       addresses: ['bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4']
+  //       addresses: ['lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA']
   //     }
   //
   //     const result = await electrumxRoute.transactionsBulk(req, res)
@@ -2866,7 +2866,7 @@ describe('#Electrumx', () => {
   //
   //   it('should get details for a single address', async () => {
   //     req.body = {
-  //       addresses: ['bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7']
+  //       addresses: ['lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA']
   //     }
   //
   //     // Mock the Insight URL for unit tests.
@@ -2899,8 +2899,8 @@ describe('#Electrumx', () => {
   //   it('should get utxos for multiple addresses', async () => {
   //     req.body = {
   //       addresses: [
-  //         'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf',
-  //         'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+  //         'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq',
+  //         'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
   //       ]
   //     }
   //
@@ -2929,7 +2929,7 @@ describe('#Electrumx', () => {
   //   it('should throw error for invalid address', async () => {
   //     try {
   //       // Address has invalid checksum.
-  //       const address = 'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+  //       const address = 'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
   //
   //       // Call the details API.
   //       await electrumxRoute._mempoolFromElectrumx(address)
@@ -2960,7 +2960,7 @@ describe('#Electrumx', () => {
   //   })
   //
   //   it('should get mempool for a single address', async () => {
-  //     const address = 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+  //     const address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
   //
   //     // Mock unit tests to prevent live network calls.
   //     if (process.env.TEST === 'unit') {
@@ -3032,7 +3032,7 @@ describe('#Electrumx', () => {
   //   })
   //
   //   it('should detect a network mismatch', async () => {
-  //     req.params.address = 'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+  //     req.params.address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
   //
   //     const result = await electrumxRoute.getMempool(req, res)
   //     // console.log(`result: ${util.inspect(result)}`)
@@ -3049,7 +3049,7 @@ describe('#Electrumx', () => {
   //   it('should pass errors from electrum-cash to user', async () => {
   //     // Address has invalid checksum.
   //     req.params.address =
-  //       'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+  //       'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
   //
   //     // Call the details API.
   //     const result = await electrumxRoute.getMempool(req, res)
@@ -3064,7 +3064,7 @@ describe('#Electrumx', () => {
   //
   //   it('should get mempool for a single address', async () => {
   //     req.params.address =
-  //       'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+  //       'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
   //
   //     // Mock unit tests to prevent live network calls.
   //     if (process.env.TEST === 'unit') {
@@ -3156,7 +3156,7 @@ describe('#Electrumx', () => {
   //
   //   it('should detect a network mismatch', async () => {
   //     req.body = {
-  //       addresses: ['bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4']
+  //       addresses: ['lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA']
   //     }
   //
   //     const result = await electrumxRoute.mempoolBulk(req, res)
@@ -3168,7 +3168,7 @@ describe('#Electrumx', () => {
   //
   //   it('should get mempool details for a single address', async () => {
   //     req.body = {
-  //       addresses: ['bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7']
+  //       addresses: ['lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA']
   //     }
   //
   //     // Mock the Insight URL for unit tests.
@@ -3207,8 +3207,8 @@ describe('#Electrumx', () => {
   //   it('should get mempool for multiple addresses', async () => {
   //     req.body = {
   //       addresses: [
-  //         'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf',
-  //         'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+  //         'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq',
+  //         'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
   //       ]
   //     }
   //

@@ -8,9 +8,10 @@ const axios = require('axios')
 const wlogger = require('./winston-logging')
 
 const util = require('util')
+const bitcore = require('@abcpros/bitcore-lib-xpi')
 util.inspect.defaultOptions = { depth: 1 }
 
-const BCHJS = require('@psf/bch-js')
+const BCHJS = require('@abcpros/bch-js')
 const bchjs = new BCHJS()
 
 // let _this
@@ -21,6 +22,7 @@ class RouteUtils {
 
     this.bchjs = bchjs
     this.axios = axios
+    this.bitcore = bitcore
   }
 
   // This function expects the Request Express.js object and an array as input.
@@ -56,12 +58,12 @@ class RouteUtils {
     }
   }
 
-  // Returns true if user-provided cash address matches the correct network,
-  // mainnet or testnet. If NETWORK env var is not defined, it returns false.
-  // This prevent a common user-error issue that is easy to make: passing a
-  // testnet address into rest.bitcoin.com or passing a mainnet address into
-  // trest.bitcoin.com.
-  validateNetwork (addr) {
+  /**
+   * Check if the address has valid network
+   * @param {XAddress} xaddr
+   * @returns
+   */
+  validateNetwork (xaddr) {
     try {
       const network = process.env.NETWORK
 
@@ -71,16 +73,12 @@ class RouteUtils {
         return false
       }
 
-      // Convert the user-provided address to a cashaddress, for easy detection
-      // of the intended network.
-      const cashAddr = this.bchjs.Address.toCashAddress(addr)
-
       // Return true if the network and address both match testnet
-      const addrIsTest = this.bchjs.Address.isTestnetAddress(cashAddr)
+      const addrIsTest = xaddr.network.name === 'testnet'
       if (network === 'testnet' && addrIsTest) return true
 
       // Return true if the network and address both match mainnet
-      const addrIsMain = this.bchjs.Address.isMainnetAddress(cashAddr)
+      const addrIsMain = xaddr.network.name === 'livenet' || xaddr.network.name === 'mainnet'
       if (network === 'mainnet' && addrIsMain) return true
 
       return false

@@ -32,7 +32,7 @@ const utxosArray = {
           value: 1000
         }
       ],
-      address: 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+      address: 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
     },
     {
       utxos: [
@@ -51,7 +51,7 @@ const utxosArray = {
           value: 6000
         }
       ],
-      address: 'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+      address: 'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
     }
   ]
 }
@@ -68,11 +68,11 @@ const balances = {
   balances: [
     {
       balance: { confirmed: 7000, unconfirmed: 0 },
-      address: 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+      address: 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
     },
     {
       balance: { confirmed: 7000, unconfirmed: 0 },
-      address: 'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+      address: 'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
     }
   ]
 }
@@ -197,11 +197,11 @@ const transactionsBulk = {
   transactions: [
     {
       transactions,
-      address: 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+      address: 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
     },
     {
       transactions,
-      address: 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+      address: 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
     }
   ]
 }

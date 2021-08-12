@@ -10,10 +10,10 @@ export NETWORK=mainnet
 #export NETWORK=testnet
 
 # Full node
-export RPC_IP=<ip>:8332
-export RPC_BASEURL=http://$RPC_IP/
-export RPC_USERNAME=bitcoin
-export RPC_PASSWORD=password
+export RPC_IP=127.0.0.1:10604
+export RPC_BASEURL=http://127.0.0.1:10604/
+export RPC_USERNAME=lotus
+export RPC_PASSWORD=lotus
 
 # (optional) If load-balancing multiple full nodes, it's best to pick a single
 # one for broadcasting transactions to the network. Prevents accidental
@@ -31,12 +31,12 @@ export SLPDB_WHITELIST_URL=http://<SLPDB IP>:12300/
 export SLP_API_URL=http://10.0.0.5:5001/
 
 # Mainnet Fulcrum / ElectrumX
-export FULCRUM_URL=192.168.0.6
-export FULCRUM_PORT=50002
+export FULCRUM_URL=lotusdvn03.abcpay.cash
+export FULCRUM_PORT=50001
 
 # Redis DB - Used for rate limiting - customize to your own Redis installation.
 export REDIS_PORT=6379
-export REDIS_HOST=172.17.0.1
+export REDIS_HOST=127.0.0.1
 
 # JWT Token Secret
 # This is used to verify JWT tokens generated with jwt-bch-api:

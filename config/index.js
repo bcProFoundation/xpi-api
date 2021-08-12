@@ -21,7 +21,7 @@ const config = {
     : 10,
   pointsPerMinute: process.env.POINTS_PER_MINUTE
     ? Number(process.env.POINTS_PER_MINUTE)
-    : 10000,
+    : 100000,
   whitelistDomains: process.env.WHITELIST_DOMAINS
     ? process.env.WHITELIST_DOMAINS.split(',')
     : ['fullstack.cash', 'psfoundation.cash', '10.0.']

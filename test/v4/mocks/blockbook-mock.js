@@ -8,7 +8,7 @@ const mockBalance = {
   page: 1,
   totalPages: 1,
   itemsOnPage: 1000,
-  address: 'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf',
+  address: 'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq',
   balance: '10000000',
   totalReceived: '10000000',
   totalSent: '0',
@@ -54,7 +54,7 @@ const mockTx = {
       value: '10000000',
       n: 1,
       hex: '76a9140e5b4ad9008bb9a027b7e2d0ef958914e12db20788ac',
-      addresses: ['bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4']
+      addresses: ['lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA']
     }
   ],
   blockHash: '00000000005242edac4635ac2375a454e801cc1be8b131b622328089731e5e30',

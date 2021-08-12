@@ -127,7 +127,7 @@ describe('#XPUBRouter', () => {
       // if (process.env.TEST === "unit") {
       //   nock(`${process.env.BITCOINCOM_BASEURL}`)
       //     .get(
-      //       `/txs/?address=bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4&pageNum=0`
+      //       `/txs/?address=lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA&pageNum=0`
       //     )
       //     .reply(200, mockData.mockTransactions)
       // }

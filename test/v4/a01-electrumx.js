@@ -144,14 +144,21 @@ describe('#Electrumx', () => {
     it('should throw error for invalid address', async () => {
       try {
         // Address has invalid checksum.
-        const address = 'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        const address = 'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtq'
+
+        // Mock unit tests to prevent live network calls.
+        if (process.env.TEST === 'unit') {
+          electrumxRoute.isReady = true // Force flag.
+
+          sandbox.stub(electrumxRoute.electrumx, 'request').resolves([])
+        }
 
         // Call the details API.
         await electrumxRoute._utxosFromElectrumx(address)
 
         assert.equal(true, false, 'Unexpected code path')
       } catch (err) {
-        assert.include(err.message, 'Invalid checksum')
+        assert.include(err.message, 'Invalid Argument')
       }
     })
 
@@ -175,7 +182,7 @@ describe('#Electrumx', () => {
     })
 
     it('should get balance for a single address', async () => {
-      const address = 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+      const address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -206,7 +213,7 @@ describe('#Electrumx', () => {
       assert.equal(res.statusCode, 422, 'Expect 422 status code')
 
       assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
+      assert.include(result.error, 'data parameter supplied is not a string.')
 
       assert.property(result, 'success')
       assert.equal(result.success, false)
@@ -236,14 +243,14 @@ describe('#Electrumx', () => {
       assert.equal(res.statusCode, 422, 'Expect 422 status code')
 
       assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
+      assert.include(result.error, 'Non-base58 character')
 
       assert.property(result, 'success')
       assert.equal(result.success, false)
     })
 
     it('should detect a network mismatch', async () => {
-      req.params.address = 'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+      req.params.address = 'lotusT16PSJHYxpDwxixWaZnpDvy6nmWVqQsgMtx3yNYSwK'
 
       const result = await electrumxRoute.getUtxos(req, res)
       // console.log(`result: ${util.inspect(result)}`)
@@ -257,34 +264,34 @@ describe('#Electrumx', () => {
       assert.equal(result.success, false)
     })
 
-    it('should pass errors from ElectrumX to user', async () => {
-      // Address has invalid checksum.
-      req.params.address =
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+    // it('should pass errors from ElectrumX to user', async () => {
+    //   // Address has invalid checksum.
+    //   req.params.address =
+    //     'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
 
-      // Mock unit tests to prevent live network calls.
-      if (process.env.TEST === 'unit') {
-        electrumxRoute.isReady = true // Force flag.
+    //   // Mock unit tests to prevent live network calls.
+    //   if (process.env.TEST === 'unit') {
+    //     electrumxRoute.isReady = true // Force flag.
 
-        sandbox
-          .stub(electrumxRoute.electrumx, 'request')
-          .resolves(mockData.utxos)
-      }
+    //     sandbox
+    //       .stub(electrumxRoute.electrumx, 'request')
+    //       .resolves(mockData.utxos)
+    //   }
 
-      // Call the details API.
-      const result = await electrumxRoute.getUtxos(req, res)
-      // console.log(`result: ${JSON.stringify(result, null, 2)}`)
+    //   // Call the details API.
+    //   const result = await electrumxRoute.getUtxos(req, res)
+    //   // console.log(`result: ${JSON.stringify(result, null, 2)}`)
 
-      assert.property(result, 'success')
-      assert.equal(result.success, false)
+    //   assert.property(result, 'success')
+    //   assert.equal(result.success, false)
 
-      assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
-    })
+    //   assert.property(result, 'error')
+    //   assert.include(result.error, 'Unsupported address format')
+    // })
 
     it('should get balance for a single address', async () => {
       req.params.address =
-        'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+        'lotus_16PSJLg7JBdee6tMZUqPo2kA8LNhKSkRmwyPKRSpd'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -344,7 +351,7 @@ describe('#Electrumx', () => {
 
     it('should throw an error for an invalid address', async () => {
       req.body = {
-        addresses: ['02v05l7qs5s24srqju498qu55dwuj0cx5ehjm2c']
+        addresses: ['lotus_16PSJKCybhvXjeshEG2peBMPtvrfXDqBBBZeKmngG']
       }
 
       const result = await electrumxRoute.utxosBulk(req, res)
@@ -352,7 +359,7 @@ describe('#Electrumx', () => {
       assert.equal(res.statusCode, 400, 'HTTP status code 400 expected.')
       assert.include(
         result.error,
-        'Invalid BCH address',
+        'Invalid XPI address',
         'Proper error message'
       )
     })
@@ -372,11 +379,10 @@ describe('#Electrumx', () => {
 
     it('should detect a network mismatch', async () => {
       req.body = {
-        addresses: ['bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4']
+        addresses: ['lotusT16PSJHYxpDwxixWaZnpDvy6nmWVqQsgMtx3yNYSwK']
       }
 
       const result = await electrumxRoute.utxosBulk(req, res)
-      // console.log(`result: ${util.inspect(result)}`)
 
       assert.equal(res.statusCode, 400, 'HTTP status code 400 expected.')
       assert.include(result.error, 'Invalid network', 'Proper error message')
@@ -384,7 +390,7 @@ describe('#Electrumx', () => {
 
     it('should get details for a single address', async () => {
       req.body = {
-        addresses: ['bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7']
+        addresses: ['lotus_16PSJL9MqZHGgQGsdrvseaLUknNeqCUhxuE9XwCHD']
       }
 
       // Mock the Insight URL for unit tests.
@@ -419,8 +425,8 @@ describe('#Electrumx', () => {
     it('should get utxos for multiple addresses', async () => {
       req.body = {
         addresses: [
-          'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf',
-          'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+          'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq',
+          'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
         ]
       }
 
@@ -465,7 +471,7 @@ describe('#Electrumx', () => {
 
     it('should get details for a single txid', async () => {
       const txid =
-        '4db095f34d632a4daf942142c291f1f2abb5ba2e1ccac919d85bdc2f671fb251'
+        '0d2f101fa45d562a1915996caca920307db1e4970066c83e90754b44bcea7e67'
 
       stubMethodForUnitTests(
         electrumxRoute.electrumx,
@@ -481,7 +487,7 @@ describe('#Electrumx', () => {
       assert.property(result, 'hex')
       assert.property(result, 'vin')
       assert.property(result, 'vout')
-      assert.equal(result.hash, txid)
+      assert.equal(result.txid, txid)
     })
   })
 
@@ -522,7 +528,7 @@ describe('#Electrumx', () => {
 
     it('should get details for a single txid', async () => {
       req.params.txid =
-        '4db095f34d632a4daf942142c291f1f2abb5ba2e1ccac919d85bdc2f671fb251'
+        '0d2f101fa45d562a1915996caca920307db1e4970066c83e90754b44bcea7e67'
 
       stubMethodForUnitTests(
         electrumxRoute.electrumx,
@@ -545,7 +551,7 @@ describe('#Electrumx', () => {
       assert.property(result.details, 'hex')
       assert.property(result.details, 'vin')
       assert.property(result.details, 'vout')
-      assert.equal(result.details.hash, req.params.txid)
+      assert.equal(result.details.txid, req.params.txid)
     })
   })
 
@@ -996,7 +1002,7 @@ describe('#Electrumx', () => {
     it('should throw error for invalid address', async () => {
       try {
         // Address has invalid checksum.
-        const address = 'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        const address = 'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtq'
 
         // Mock unit tests to prevent live network calls.
         // if (process.env.TEST === 'unit') {
@@ -1013,12 +1019,12 @@ describe('#Electrumx', () => {
         assert.equal(true, false, 'Unexpected code path')
       } catch (err) {
         // console.log('err2: ', err)
-        assert.include(err.message, 'Invalid checksum')
+        assert.include(err.message, 'Invalid Argument')
       }
     })
 
     it('should get balance for a single address', async () => {
-      const address = 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+      const address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -1038,7 +1044,7 @@ describe('#Electrumx', () => {
     })
 
     it('should get balance for an address with no transaction history', async () => {
-      const address = 'bitcoincash:qp2ew6pvrs22jtsvtjyumjgas6jkvgn2hy3ad4wpw8'
+      const address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -1066,7 +1072,7 @@ describe('#Electrumx', () => {
       assert.equal(res.statusCode, 422, 'Expect 422 status code')
 
       assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
+      assert.include(result.error, 'data parameter supplied is not a string.')
 
       assert.property(result, 'success')
       assert.equal(result.success, false)
@@ -1096,14 +1102,14 @@ describe('#Electrumx', () => {
       assert.equal(res.statusCode, 422, 'Expect 422 status code')
 
       assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
+      assert.include(result.error, 'Non-base58 character')
 
       assert.property(result, 'success')
       assert.equal(result.success, false)
     })
 
     it('should detect a network mismatch', async () => {
-      req.params.address = 'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+      req.params.address = 'lotusT16PSJHYxpDwxixWaZnpDvy6nmWVqQsgMtx3yNYSwK'
 
       const result = await electrumxRoute.getBalance(req, res)
       // console.log(`result: ${util.inspect(result)}`)
@@ -1119,8 +1125,9 @@ describe('#Electrumx', () => {
 
     it('should pass errors from electrum-cash to user', async () => {
       // Address has invalid checksum.
+
       req.params.address =
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
 
       // Call the details API.
       const result = await electrumxRoute.getBalance(req, res)
@@ -1130,12 +1137,12 @@ describe('#Electrumx', () => {
       assert.equal(result.success, false)
 
       assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
+      assert.include(result.error, 'Invalid checksum')
     })
 
     it('should get balance for a single address', async () => {
       req.params.address =
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+        'lotus_16PSJL9MqZHGgQGsdrvseaLUknNeqCUhxuE9XwCHD'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -1219,7 +1226,7 @@ describe('#Electrumx', () => {
 
     it('should detect a network mismatch', async () => {
       req.body = {
-        addresses: ['bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4']
+        addresses: ['lotusT16PSJHYxpDwxixWaZnpDvy6nmWVqQsgMtx3yNYSwK']
       }
 
       const result = await electrumxRoute.balanceBulk(req, res)
@@ -1231,7 +1238,7 @@ describe('#Electrumx', () => {
 
     it('should get details for a single address', async () => {
       req.body = {
-        addresses: ['bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7']
+        addresses: ['lotus_16PSJL9MqZHGgQGsdrvseaLUknNeqCUhxuE9XwCHD']
       }
 
       // Mock the Insight URL for unit tests.
@@ -1263,8 +1270,8 @@ describe('#Electrumx', () => {
     it('should get utxos for multiple addresses', async () => {
       req.body = {
         addresses: [
-          'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf',
-          'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+          'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq',
+          'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
         ]
       }
 
@@ -1293,7 +1300,7 @@ describe('#Electrumx', () => {
     it('should throw error for invalid address', async () => {
       try {
         // Address has invalid checksum.
-        const address = 'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        const address = 'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
 
         // Call the details API.
         await electrumxRoute._transactionsFromElectrumx(address)
@@ -1301,12 +1308,12 @@ describe('#Electrumx', () => {
         assert.equal(true, false, 'Unexpected code path')
       } catch (err) {
         // console.log('err2: ', err)
-        assert.include(err.message, 'Invalid checksum')
+        assert.include(err.message, 'Invalid Argument')
       }
     })
 
     it('should get transaction history for a single address', async () => {
-      const address = 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+      const address = 'lotus_16PSJL9MqZHGgQGsdrvseaLUknNeqCUhxuE9XwCHD'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -1327,7 +1334,7 @@ describe('#Electrumx', () => {
     })
 
     it('should get history for an address with no transaction history', async () => {
-      const address = 'bitcoincash:qp2ew6pvrs22jtsvtjyumjgas6jkvgn2hy3ad4wpw8'
+      const address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -1353,7 +1360,7 @@ describe('#Electrumx', () => {
       assert.equal(res.statusCode, 422, 'Expect 422 status code')
 
       assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
+      assert.include(result.error, 'data parameter supplied is not a string.')
 
       assert.property(result, 'success')
       assert.equal(result.success, false)
@@ -1383,14 +1390,14 @@ describe('#Electrumx', () => {
       assert.equal(res.statusCode, 422, 'Expect 422 status code')
 
       assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
+      assert.include(result.error, 'Non-base58 character')
 
       assert.property(result, 'success')
       assert.equal(result.success, false)
     })
 
     it('should detect a network mismatch', async () => {
-      req.params.address = 'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+      req.params.address = 'lotusT16PSJHYxpDwxixWaZnpDvy6nmWVqQsgMtx3yNYSwK'
 
       const result = await electrumxRoute.getTransactions(req, res)
       // console.log(`result: ${util.inspect(result)}`)
@@ -1407,7 +1414,7 @@ describe('#Electrumx', () => {
     it('should pass errors from ElectrumX to user', async () => {
       // Address has invalid checksum.
       req.params.address =
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
 
       // Call the details API.
       const result = await electrumxRoute.getTransactions(req, res)
@@ -1417,12 +1424,12 @@ describe('#Electrumx', () => {
       assert.equal(result.success, false)
 
       assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
+      assert.include(result.error, 'Invalid checksum')
     })
 
     it('should get transactions for a single address', async () => {
       req.params.address =
-        'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+        'lotus_16PSJL9MqZHGgQGsdrvseaLUknNeqCUhxuE9XwCHD'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -1507,7 +1514,7 @@ describe('#Electrumx', () => {
 
     it('should detect a network mismatch', async () => {
       req.body = {
-        addresses: ['bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4']
+        addresses: ['lotusT16PSJHYxpDwxixWaZnpDvy6nmWVqQsgMtx3yNYSwK']
       }
 
       const result = await electrumxRoute.transactionsBulk(req, res)
@@ -1519,7 +1526,7 @@ describe('#Electrumx', () => {
 
     it('should get details for a single address', async () => {
       req.body = {
-        addresses: ['bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7']
+        addresses: ['lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA']
       }
 
       // Mock the Insight URL for unit tests.
@@ -1552,8 +1559,8 @@ describe('#Electrumx', () => {
     it('should get utxos for multiple addresses', async () => {
       req.body = {
         addresses: [
-          'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf',
-          'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+          'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq',
+          'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
         ]
       }
 
@@ -1582,20 +1589,20 @@ describe('#Electrumx', () => {
     it('should throw error for invalid address', async () => {
       try {
         // Address has invalid checksum.
-        const address = 'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        const address = 'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
 
         // Call the details API.
         await electrumxRoute._mempoolFromElectrumx(address)
 
         assert.equal(true, false, 'Unexpected code path')
       } catch (err) {
-        assert.include(err.message, 'Invalid checksum')
+        assert.include(err.message, 'Invalid Argument')
       }
     })
 
     it('should return empty array for address with no unconfirmed utxos', async () => {
       // Address has invalid checksum.
-      const address = 'bchtest:qqtmlpspjakqlvywae226esrcdrj9auynuwadh55uf'
+      const address = 'lotus_16PSJLg7JBdee6tMZUqPo2kA8LNhKSkRmwyPKRSpd'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -1613,7 +1620,7 @@ describe('#Electrumx', () => {
     })
 
     it('should get mempool for a single address', async () => {
-      const address = 'bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7'
+      const address = 'lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -1648,7 +1655,7 @@ describe('#Electrumx', () => {
       assert.equal(res.statusCode, 422, 'Expect 422 status code')
 
       assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
+      assert.include(result.error, 'data parameter supplied is not a string')
 
       assert.property(result, 'success')
       assert.equal(result.success, false)
@@ -1678,14 +1685,14 @@ describe('#Electrumx', () => {
       assert.equal(res.statusCode, 422, 'Expect 422 status code')
 
       assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
+      assert.include(result.error, 'Non-base58 character')
 
       assert.property(result, 'success')
       assert.equal(result.success, false)
     })
 
     it('should detect a network mismatch', async () => {
-      req.params.address = 'bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4'
+      req.params.address = 'lotusT16PSJHYxpDwxixWaZnpDvy6nmWVqQsgMtx3yNYSwK'
 
       const result = await electrumxRoute.getMempool(req, res)
       // console.log(`result: ${util.inspect(result)}`)
@@ -1702,7 +1709,7 @@ describe('#Electrumx', () => {
     it('should pass errors from electrum-cash to user', async () => {
       // Address has invalid checksum.
       req.params.address =
-        'bitcoincash:qr69kyzha07dcecrsvjwsj4s6slnlq4r8c30lxnur2'
+        'lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtG'
 
       // Call the details API.
       const result = await electrumxRoute.getMempool(req, res)
@@ -1712,12 +1719,12 @@ describe('#Electrumx', () => {
       assert.equal(result.success, false)
 
       assert.property(result, 'error')
-      assert.include(result.error, 'Unsupported address format')
+      assert.include(result.error, 'Invalid checksum')
     })
 
     it('should get mempool for a single address', async () => {
       req.params.address =
-        'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+        'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
 
       // Mock unit tests to prevent live network calls.
       if (process.env.TEST === 'unit') {
@@ -1766,7 +1773,7 @@ describe('#Electrumx', () => {
 
     it('should error on non-array single address', async () => {
       req.body = {
-        address: 'qzs02v05l7qs5s24srqju498qu55dwuj0cx5ehjm2c'
+        address: 'lotus_16PSJN3L4ZooQVrkX6xQ48gnkNM5StqjmGWmG3ZGR'
       }
 
       const result = await electrumxRoute.mempoolBulk(req, res)
@@ -1794,7 +1801,7 @@ describe('#Electrumx', () => {
 
     it('should throw an error for an invalid address', async () => {
       req.body = {
-        addresses: ['02v05l7qs5s24srqju498qu55dwuj0cx5ehjm2c']
+        addresses: ['lotus_16PSJN3L4ZooQVrkX6xQ58gnkNM5StqjmGWmG3ZGR']
       }
 
       const result = await electrumxRoute.mempoolBulk(req, res)
@@ -1809,7 +1816,7 @@ describe('#Electrumx', () => {
 
     it('should detect a network mismatch', async () => {
       req.body = {
-        addresses: ['bchtest:qq89kjkeqz9mngp8kl3dpmu43y2wztdjqu500gn4c4']
+        addresses: ['lotusT16PSJHYxpDwxixWaZnpDvy6nmWVqQsgMtx3yNYSwK']
       }
 
       const result = await electrumxRoute.mempoolBulk(req, res)
@@ -1821,7 +1828,7 @@ describe('#Electrumx', () => {
 
     it('should get mempool details for a single address', async () => {
       req.body = {
-        addresses: ['bitcoincash:qp3sn6vlwz28ntmf3wmyra7jqttfx7z6zgtkygjhc7']
+        addresses: ['lotus_16PSJKjUeQequGYQrKjWprmd5G36rJXHiVggWtvoA']
       }
 
       // Mock the Insight URL for unit tests.
@@ -1860,8 +1867,8 @@ describe('#Electrumx', () => {
     it('should get mempool for multiple addresses', async () => {
       req.body = {
         addresses: [
-          'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf',
-          'bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf'
+          'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq',
+          'lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq'
         ]
       }
 

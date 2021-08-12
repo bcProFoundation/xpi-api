@@ -8,6 +8,7 @@ const express = require('express')
 const router = express.Router()
 const axios = require('axios')
 const util = require('util')
+const bitcore = require('@abcpros/bitcore-lib-xpi')
 
 const wlogger = require('../../util/winston-logging')
 const config = require('../../../config')
@@ -15,7 +16,7 @@ const config = require('../../../config')
 const RouteUtils = require('../../util/route-utils')
 const routeUtils = new RouteUtils()
 
-const BCHJS = require('@psf/bch-js')
+const BCHJS = require('@abcpros/bch-js')
 const restURL = process.env.LOCAL_RESTURL
   ? process.env.LOCAL_RESTURL
   : 'https://api.fullstack.cash/v4/'
@@ -31,6 +32,7 @@ class Encryption {
     _this.axios = axios
     _this.routeUtils = routeUtils
     _this.bchjs = bchjs
+    _this.bitcore = bitcore
     // _this.blockbook = blockbook
     // _this.rawTransactions = rawTransactions
 
@@ -76,7 +78,7 @@ class Encryption {
    *
    *
    * @apiExample Example usage:
-   * curl -X GET "https://api.fullstack.cash/v4/encryption/publickey/bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf" -H "accept: application/json"
+   * curl -X GET "https://api.fullstack.cash/v4/encryption/publickey/lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq" -H "accept: application/json"
    *
    */
   async getPublicKey (req, res, next) {
@@ -101,10 +103,10 @@ class Encryption {
         apiLevel: req.locals.apiLevel
       }
 
-      const cashAddr = _this.bchjs.Address.toCashAddress(address)
+      const xaddr = _this.bitcore.XAddress.fromString(address)
 
       // Prevent a common user error. Ensure they are using the correct network address.
-      const networkIsValid = _this.routeUtils.validateNetwork(cashAddr)
+      const networkIsValid = _this.routeUtils.validateNetwork(xaddr)
       if (!networkIsValid) {
         res.status(400)
         return res.json({
@@ -117,10 +119,10 @@ class Encryption {
       // console.log(
       wlogger.debug(
         'Executing encryption/getPublicKey with this address: ',
-        cashAddr
+        address
       )
 
-      const rawTxData = await _this.bchjs.Electrumx.transactions([cashAddr], usrObj)
+      const rawTxData = await _this.bchjs.Electrumx.transactions([address], usrObj)
       // console.log(`rawTxData: ${JSON.stringify(rawTxData, null, 2)}`)
 
       // Extract just the TXIDs
@@ -162,10 +164,11 @@ class Encryption {
           const keyBuf = Buffer.from(pubKey, 'hex')
           const ec = _this.bchjs.ECPair.fromPublicKey(keyBuf)
           const cashAddr2 = _this.bchjs.ECPair.toCashAddress(ec)
+          const address2 = _this.bitcore.Address.fromString(cashAddr2).toXAddress()
           // console.log(`cashAddr2: ${cashAddr2}`)
 
           // If public keys match, this is the correct public key.
-          if (cashAddr === cashAddr2) {
+          if (address === address2) {
             res.status(200)
             return res.json({
               success: true,

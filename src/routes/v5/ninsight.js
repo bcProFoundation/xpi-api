@@ -11,7 +11,7 @@ const express = require('express')
 
 const router = express.Router()
 
-// const BCHJS = require('@psf/bch-js')
+// const BCHJS = require('@abcpros/bch-js')
 // const bchjs = new BCHJS()
 
 // let _this

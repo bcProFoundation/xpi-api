@@ -57,64 +57,16 @@ const mockFulcrumTxHistory = {
     {
       transactions: [
         {
-          height: 511463,
-          tx_hash:
-            'eff00a9538487ff44243c75fb13de19b5783454c42c81b9aff9afbfd09cbaec3'
+          height: 31471,
+          tx_hash: '385c866396f066b86d8870177a91b94dcdb46b38a4b460c4c2f936a71a3fece6'
         },
         {
-          height: 511464,
-          tx_hash:
-            '7e9aa7a74de2b30200a2d6fc748ff35a0c753221444194f720bb7f61ef1d9153'
+          height: 33596,
+          tx_hash: '6e02ecd00ad1601f8a79891c74a4cadad7fc59749a90c79e874d20b645611255'
         },
         {
-          height: 513373,
-          tx_hash:
-            '6960255abe64893073921e96bf3c053c82686e0fc22a565494fbe2a31e766975'
-        },
-        {
-          height: 513373,
-          tx_hash:
-            '9ea667bcfc9cd337bd6c5583d8094c1b1942bd2015d95b54189deac5070eeff0'
-        },
-        {
-          height: 560481,
-          tx_hash:
-            'ecc1b51bac767880382bf3190ff17abf78d0936843a022a943d871116ed50368'
-        },
-        {
-          height: 560615,
-          tx_hash:
-            'b3792d28377b975560e1b6f09e48aeff8438d4c6969ca578bd406393bd50bd7d'
-        },
-        {
-          height: 561568,
-          tx_hash:
-            '8bc2134c7e48e56e1769b3d7c4c1e3a0acc68e1e58160eee6fa67f3208c07262'
-        },
-        {
-          height: 561569,
-          tx_hash:
-            'ceb0cab0e37b59caf3ca29e1a698d19ff47f2827dd09cb2f3b91b9100b1dad1c'
-        },
-        {
-          height: 561572,
-          tx_hash:
-            '0f9b49cafeb9ae1d741cdb12137c92816aa8470944c270a78ba2e610bd59190d'
-        },
-        {
-          height: 561582,
-          tx_hash:
-            'e4a0ac48ff3f42fc342717a2a3d34248e5e85bae79d59bd20e1b60e61b1c500f'
-        },
-        {
-          height: 562106,
-          tx_hash:
-            '1afcc63b244182647909539ebe3f4a44b8ea4120a95edb8d9eebe5347b9491bb'
-        },
-        {
-          height: 562106,
-          tx_hash:
-            'c42f8f16d3baa2ee343ea89ef110dfe094992379d08edd30887b8ca7ee671c9a'
+          height: 33788,
+          tx_hash: '55d71dbc4a9161a357b02f35ac60035e2b7ca7982c4d0800341cfa588eba4c95'
         }
       ]
     }
@@ -122,43 +74,54 @@ const mockFulcrumTxHistory = {
 }
 
 const mockTxDetails2 = {
-  txid: '7e9aa7a74de2b30200a2d6fc748ff35a0c753221444194f720bb7f61ef1d9153',
-  hash: '7e9aa7a74de2b30200a2d6fc748ff35a0c753221444194f720bb7f61ef1d9153',
+  txid: '385c866396f066b86d8870177a91b94dcdb46b38a4b460c4c2f936a71a3fece6',
+  hash: '3897d694606af69df0b25913025c62c4c81d1a83b7d8ce60068b22123d9bff73',
   version: 1,
-  size: 221,
+  size: 226,
   locktime: 0,
   vin: [
     {
-      txid: 'eff00a9538487ff44243c75fb13de19b5783454c42c81b9aff9afbfd09cbaec3',
+      txid: '340f2f838fe7e3a73a474a94f5f3b68a9f8c886a321dbfced4d3408ee003d03a',
       vout: 0,
       scriptSig: {
         asm:
-          '30440220150e7c9b646fe1f7f576456c9808c89a710e8fbb753e9f5ca6ed2d39a0b69ba602202212968163d8dfe35eec5975fce38440082029cb2691a3e0ad1714f9c412c47a[ALL|FORKID] 044eb40b025df18409f2a5197b010dd62a9e65d9a74e415e5b10367721a9c4baa7ebfee22d14b8ece1c9bd70c0d9e5e8b00b61b81b88a1b5ce6f24eac6b8a34b2c',
+          '3045022100fcbc08293c917d510f53900d50a6be30533abe6c93a5e457b7df5218ee0a811d02201f38baff6bba4ac5c8f3e7c80dc0367ebb8ebc4269c33a91da9493432bca4261[ALL|FORKID] 035525ab80b404dd2e32df8935a832d1d1b6bd571f1832496c66060979a84a5d8c',
         hex:
-          '4730440220150e7c9b646fe1f7f576456c9808c89a710e8fbb753e9f5ca6ed2d39a0b69ba602202212968163d8dfe35eec5975fce38440082029cb2691a3e0ad1714f9c412c47a4141044eb40b025df18409f2a5197b010dd62a9e65d9a74e415e5b10367721a9c4baa7ebfee22d14b8ece1c9bd70c0d9e5e8b00b61b81b88a1b5ce6f24eac6b8a34b2c'
+          '483045022100fcbc08293c917d510f53900d50a6be30533abe6c93a5e457b7df5218ee0a811d02201f38baff6bba4ac5c8f3e7c80dc0367ebb8ebc4269c33a91da9493432bca42614121035525ab80b404dd2e32df8935a832d1d1b6bd571f1832496c66060979a84a5d8c'
       },
       sequence: 4294967295
     }
   ],
   vout: [
     {
-      value: 0.01266023,
+      value: 4.999774,
       n: 0,
       scriptPubKey: {
-        asm: 'OP_HASH160 91bacd6785e3f8c78d5f29b4020b94c753444130 OP_EQUAL',
-        hex: 'a91491bacd6785e3f8c78d5f29b4020b94c75344413087',
+        asm: 'OP_DUP OP_HASH160 91f0132fd841285399dba988108fc00744fcb99c OP_EQUALVERIFY OP_CHECKSIG',
+        hex: '76a91491f0132fd841285399dba988108fc00744fcb99c88ac',
         reqSigs: 1,
         type: 'scripthash',
-        addresses: ['bitcoincash:pzgm4nt8sh3l33udtu5mgqstjnr4x3zpxqrrrndnw5']
+        addresses: ['lotus_16PSJMaesCsSgNd1d29QpF3T2Z8Bvkzzz8KRCeQzY']
+      }
+    },
+    {
+      value: 5,
+      n: 0,
+      scriptPubKey: {
+        asm: 'OP_DUP OP_HASH160 483c8f01ada83e56fecb909c3cfb51f6711e8eff OP_EQUALVERIFY OP_CHECKSIG',
+        hex: '76a914483c8f01ada83e56fecb909c3cfb51f6711e8eff88ac',
+        reqSigs: 1,
+        type: 'pubkeyhash',
+        addresses: ['lotus_16PSJKKkyNhuwZxWRJZK9jxrcAe4abvUM9K1QyWtw']
       }
     }
   ],
   hex:
-    '0100000001c3aecb09fdfb9aff9a1bc8424c4583579be13db15fc74342f47f4838950af0ef000000008a4730440220150e7c9b646fe1f7f576456c9808c89a710e8fbb753e9f5ca6ed2d39a0b69ba602202212968163d8dfe35eec5975fce38440082029cb2691a3e0ad1714f9c412c47a4141044eb40b025df18409f2a5197b010dd62a9e65d9a74e415e5b10367721a9c4baa7ebfee22d14b8ece1c9bd70c0d9e5e8b00b61b81b88a1b5ce6f24eac6b8a34b2cffffffff01675113000000000017a91491bacd6785e3f8c78d5f29b4020b94c7534441308700000000',
-  blockhash: '000000000000000001aab6818b4ad0379a3f7a13940d9b3d4838b3dea1d0a083',
-  confirmations: 149222,
-  time: 1515088493,
-  blocktime: 1515088493
+    '01000000013ad003e08e40d3d4cebf1d326a888c9f8ab6f3f5944a473aa7e3e78f832f0f34000000006b483045022100fcbc08293c917d510f53900d50a6be30533abe6c93a5e457b7df5218ee0a811d02201f38baff6bba4ac5c8f3e7c80dc0367ebb8ebc4269c33a91da9493432bca42614121035525ab80b404dd2e32df8935a832d1d1b6bd571f1832496c66060979a84a5d8cffffffff025e4a4c00000000001976a91491f0132fd841285399dba988108fc00744fcb99c88ac404b4c00000000001976a914483c8f01ada83e56fecb909c3cfb51f6711e8eff88ac00000000',
+  blockhash: '00000000003a2d0f86c91602f8459b86d0f1459e840ad312d01bbbd38eb8a31b',
+  confirmations: 8503,
+  time: 1627007059,
+  blocktime: 1627007059
 }
 
 const mockFulcrumNoTxHistory = {

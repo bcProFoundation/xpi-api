@@ -8,7 +8,7 @@ const express = require('express')
 const router = express.Router()
 const axios = require('axios')
 const util = require('util')
-const bitcore = require('bitcore-lib-cash')
+const bitcore = require('@abcpros/bitcore-lib-xpi')
 
 const ElectrumCash = require('electrum-cash').ElectrumClient
 // const ElectrumCash = require('/home/trout/work/personal/electrum-cash/electrum.js').Client // eslint-disable-line
@@ -19,7 +19,7 @@ const config = require('../../../config')
 const RouteUtils = require('../../util/route-utils')
 const routeUtils = new RouteUtils()
 
-const BCHJS = require('@psf/bch-js')
+const BCHJS = require('@abcpros/bch-js')
 const bchjs = new BCHJS()
 
 let _this
@@ -36,9 +36,10 @@ class Electrum {
 
     _this.electrumx = new ElectrumCash(
       'bch-api',
-      '1.4.1',
+      '1.4.5',
       process.env.FULCRUM_URL,
-      process.env.FULCRUM_PORT
+      process.env.FULCRUM_PORT,
+      'tcp'
       // '192.168.0.6',
       // '50002'
     )
@@ -212,10 +213,10 @@ class Electrum {
         })
       }
 
-      const cashAddr = _this.bchjs.Address.toCashAddress(address)
+      const xaddr = _this.bitcore.XAddress.fromString(address)
 
       // Prevent a common user error. Ensure they are using the correct network address.
-      const networkIsValid = _this.routeUtils.validateNetwork(cashAddr)
+      const networkIsValid = _this.routeUtils.validateNetwork(xaddr)
       if (!networkIsValid) {
         res.status(400)
         return res.json({
@@ -227,11 +228,11 @@ class Electrum {
 
       wlogger.debug(
         'Executing electrumx/getUtxos with this address: ',
-        cashAddr
+        address
       )
 
       // Get data from ElectrumX server.
-      const electrumResponse = await _this._utxosFromElectrumx(cashAddr)
+      const electrumResponse = await _this._utxosFromElectrumx(address)
       // console.log(`_utxosFromElectrumx(): ${JSON.stringify(electrumResponse, null, 2)}`)
 
       // Pass the error message if ElectrumX reports an error.
@@ -264,7 +265,7 @@ class Electrum {
    * Limited to 20 items per request.
    *
    * @apiExample Example usage:
-   * curl -X POST "https://api.fullstack.cash/v4/electrumx/utxos" -H "accept: application/json" -H "Content-Type: application/json" -d '{"addresses":["bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf","bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf"]}'
+   * curl -X POST "https://api.fullstack.cash/v4/electrumx/utxos" -H "accept: application/json" -H "Content-Type: application/json" -d '{"addresses":["lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq","lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq"]}'
    *
    *
    */
@@ -299,18 +300,20 @@ class Electrum {
       for (let i = 0; i < addresses.length; i++) {
         const thisAddress = addresses[i]
 
-        // Ensure the input is a valid BCH address.
+        let xaddr
+
+        // Ensure the input is a valid Lotus address.
         try {
-          _this.bchjs.Address.toLegacyAddress(thisAddress)
+          xaddr = _this.bitcore.XAddress.fromString(thisAddress)
         } catch (err) {
           res.status(400)
           return res.json({
-            error: `Invalid BCH address. Double check your address is valid: ${thisAddress}`
+            error: `Invalid XPI address. Double check your address is valid: ${thisAddress}`
           })
         }
 
         // Prevent a common user error. Ensure they are using the correct network address.
-        const networkIsValid = _this.routeUtils.validateNetwork(thisAddress)
+        const networkIsValid = _this.routeUtils.validateNetwork(xaddr)
         if (!networkIsValid) {
           res.status(400)
           return res.json({
@@ -766,12 +769,12 @@ class Electrum {
   }
 
   // Returns a promise that resolves to a balance for an address. Expects input
-  // to be a cash address, and input validation to have already been done by
+  // to be a xaddress string, and input validation to have already been done by
   // parent, calling function.
-  async _balanceFromElectrumx (address) {
+  async _balanceFromElectrumx (addressStr) {
     try {
       // Convert the address to a scripthash.
-      const scripthash = _this.addressToScripthash(address)
+      const scripthash = _this.addressToScripthash(addressStr)
 
       if (!_this.isReady) {
         throw new Error(
@@ -823,11 +826,11 @@ class Electrum {
         })
       }
 
-      // Ensure the address is in cash address format.
-      const cashAddr = _this.bchjs.Address.toCashAddress(address)
+      // Ensure the address is in xaddress format.
+      const xaddr = _this.bitcore.XAddress.fromString(address)
 
       // Prevent a common user error. Ensure they are using the correct network address.
-      const networkIsValid = _this.routeUtils.validateNetwork(cashAddr)
+      const networkIsValid = _this.routeUtils.validateNetwork(xaddr)
       if (!networkIsValid) {
         res.status(400)
         return res.json({
@@ -839,11 +842,11 @@ class Electrum {
 
       wlogger.debug(
         'Executing electrumx/getBalance with this address: ',
-        cashAddr
+        address
       )
 
       // Get data from ElectrumX server.
-      const electrumResponse = await _this._balanceFromElectrumx(cashAddr)
+      const electrumResponse = await _this._balanceFromElectrumx(address)
       // console.log(`_utxosFromElectrumx(): ${JSON.stringify(electrumResponse, null, 2)}`)
 
       // Pass the error message if ElectrumX reports an error.
@@ -876,7 +879,7 @@ class Electrum {
    * Limited to 20 items per request.
    *
    * @apiExample Example usage:
-   * curl -X POST "https://api.fullstack.cash/v4/electrumx/balance" -H "accept: application/json" -H "Content-Type: application/json" -d '{"addresses":["bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf","bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf"]}'
+   * curl -X POST "https://api.fullstack.cash/v4/electrumx/balance" -H "accept: application/json" -H "Content-Type: application/json" -d '{"addresses":["lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq","lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq"]}'
    *
    *
    */
@@ -909,10 +912,11 @@ class Electrum {
       // Validate each element in the address array.
       for (let i = 0; i < addresses.length; i++) {
         const thisAddress = addresses[i]
+        let xaddr
 
-        // Ensure the input is a valid BCH address.
+        // Ensure the input is a valid XPI address.
         try {
-          _this.bchjs.Address.toLegacyAddress(thisAddress)
+          xaddr = _this.bitcore.XAddress.fromString(thisAddress)
         } catch (err) {
           res.status(400)
           return res.json({
@@ -921,7 +925,7 @@ class Electrum {
         }
 
         // Prevent a common user error. Ensure they are using the correct network address.
-        const networkIsValid = _this.routeUtils.validateNetwork(thisAddress)
+        const networkIsValid = _this.routeUtils.validateNetwork(xaddr)
         if (!networkIsValid) {
           res.status(400)
           return res.json({
@@ -1016,11 +1020,11 @@ class Electrum {
         })
       }
 
-      // Ensure the address is in cash address format.
-      const cashAddr = _this.bchjs.Address.toCashAddress(address)
+      // Ensure the address is in xaddress format.
+      const xaddr = _this.bitcore.XAddress.fromString(address)
 
       // Prevent a common user error. Ensure they are using the correct network address.
-      const networkIsValid = _this.routeUtils.validateNetwork(cashAddr)
+      const networkIsValid = _this.routeUtils.validateNetwork(xaddr)
       if (!networkIsValid) {
         res.status(400)
         return res.json({
@@ -1032,11 +1036,11 @@ class Electrum {
 
       wlogger.debug(
         'Executing electrumx/getTransactions with this address: ',
-        cashAddr
+        address
       )
 
       // Get data from ElectrumX server.
-      const electrumResponse = await _this._transactionsFromElectrumx(cashAddr)
+      const electrumResponse = await _this._transactionsFromElectrumx(address)
       // console.log(`_utxosFromElectrumx(): ${JSON.stringify(electrumResponse, null, 2)}`)
 
       // Pass the error message if ElectrumX reports an error.
@@ -1069,7 +1073,7 @@ class Electrum {
    * Limited to 20 items per request.
    *
    * @apiExample Example usage:
-   * curl -X POST "https://api.fullstack.cash/v4/electrumx/transactions" -H "accept: application/json" -H "Content-Type: application/json" -d '{"addresses":["bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf","bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf"]}'
+   * curl -X POST "https://api.fullstack.cash/v4/electrumx/transactions" -H "accept: application/json" -H "Content-Type: application/json" -d '{"addresses":["lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq","lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq"]}'
    *
    *
    */
@@ -1101,11 +1105,12 @@ class Electrum {
 
       // Validate each element in the address array.
       for (let i = 0; i < addresses.length; i++) {
+        let xaddr
         const thisAddress = addresses[i]
 
-        // Ensure the input is a valid BCH address.
+        // Ensure the input is a valid XPI address.
         try {
-          _this.bchjs.Address.toLegacyAddress(thisAddress)
+          xaddr = _this.bitcore.XAddress.fromString(thisAddress)
         } catch (err) {
           res.status(400)
           return res.json({
@@ -1114,7 +1119,7 @@ class Electrum {
         }
 
         // Prevent a common user error. Ensure they are using the correct network address.
-        const networkIsValid = _this.routeUtils.validateNetwork(thisAddress)
+        const networkIsValid = _this.routeUtils.validateNetwork(xaddr)
         if (!networkIsValid) {
           res.status(400)
           return res.json({
@@ -1209,11 +1214,11 @@ class Electrum {
         })
       }
 
-      // Ensure the address is in cash address format.
-      const cashAddr = _this.bchjs.Address.toCashAddress(address)
+      // Ensure the address is in xaddress format.
+      const xaddr = _this.bitcore.XAddress.fromString(address)
 
       // Prevent a common user error. Ensure they are using the correct network address.
-      const networkIsValid = _this.routeUtils.validateNetwork(cashAddr)
+      const networkIsValid = _this.routeUtils.validateNetwork(xaddr)
       if (!networkIsValid) {
         res.status(400)
         return res.json({
@@ -1225,11 +1230,11 @@ class Electrum {
 
       wlogger.debug(
         'Executing electrumx/getMempool with this address: ',
-        cashAddr
+        address
       )
 
       // Get data from ElectrumX server.
-      const electrumResponse = await _this._mempoolFromElectrumx(cashAddr)
+      const electrumResponse = await _this._mempoolFromElectrumx(address)
       // console.log(`_mempoolFromElectrumx(): ${JSON.stringify(electrumResponse, null, 2)}`)
 
       // Pass the error message if ElectrumX reports an error.
@@ -1262,7 +1267,7 @@ class Electrum {
    * Limited to 20 items per request.
    *
    * @apiExample Example usage:
-   * curl -X POST "https://api.fullstack.cash/v4/electrumx/unconfirmed" -H "accept: application/json" -H "Content-Type: application/json" -d '{"addresses":["bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf","bitcoincash:qrdka2205f4hyukutc2g0s6lykperc8nsu5u2ddpqf"]}'
+   * curl -X POST "https://api.fullstack.cash/v4/electrumx/unconfirmed" -H "accept: application/json" -H "Content-Type: application/json" -d '{"addresses":["lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq","lotus_16PSJPqBTkwjCtBfPLtxBPcZD7q66UV2ZF7vyRNEq"]}'
    *
    *
    */
@@ -1294,11 +1299,12 @@ class Electrum {
 
       // Validate each element in the address array.
       for (let i = 0; i < addresses.length; i++) {
+        let xaddr
         const thisAddress = addresses[i]
 
-        // Ensure the input is a valid BCH address.
+        // Ensure the input is a valid XPI address.
         try {
-          _this.bchjs.Address.toLegacyAddress(thisAddress)
+          xaddr = _this.bitcore.XAddress.fromString(thisAddress)
         } catch (err) {
           res.status(400)
           return res.json({
@@ -1307,7 +1313,7 @@ class Electrum {
         }
 
         // Prevent a common user error. Ensure they are using the correct network address.
-        const networkIsValid = _this.routeUtils.validateNetwork(thisAddress)
+        const networkIsValid = _this.routeUtils.validateNetwork(xaddr)
         if (!networkIsValid) {
           res.status(400)
           return res.json({

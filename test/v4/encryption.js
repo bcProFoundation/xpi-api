@@ -73,7 +73,7 @@ describe('#Encryption Router', () => {
   describe('#getPublicKey', () => {
     it('should get public key from blockchain', async () => {
       req.params.address =
-        'bitcoincash:qrehqueqhw629p6e57994436w730t4rzasnly00ht0'
+        'lotus_16PSJMaesCsSgNd1d29QpF3T2Z8Bvkzzz8KRCeQzY'
 
       // Mock the Insight URL for unit tests.
       if (process.env.TEST === 'unit') {
@@ -86,7 +86,6 @@ describe('#Encryption Router', () => {
       }
 
       const result = await encryptionRoute.getPublicKey(req, res)
-      // console.log(`result: ${JSON.stringify(result, null, 2)}`)
 
       assert.property(result, 'success')
       assert.equal(result.success, true)
@@ -100,7 +99,7 @@ describe('#Encryption Router', () => {
 
     it('should return false for address with no tx history', async () => {
       req.params.address =
-        'bitcoincash:qqwfpk04ecf69wuprj9yjys9rla5mk7rj5j8uthqel'
+        'lotus_16PSJHzCVXSCM1q854kQAPisu5XskDA79iX1Vzghf'
 
       // Mock the Insight URL for unit tests.
       if (process.env.TEST === 'unit') {
@@ -121,7 +120,7 @@ describe('#Encryption Router', () => {
 
     it('should return false for address with no send history', async () => {
       req.params.address =
-        'bitcoincash:qq78nwj5x97yh6wtlfd27dtlwjuh70vkjc59h8tgtg'
+        'lotus_16PSJJxsUeb6UPxTBRFF5BwaMpZo9qLuTc2Yd36tD'
 
       // Mock the Insight URL for unit tests.
       if (process.env.TEST === 'unit') {
