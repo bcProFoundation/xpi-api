@@ -12,7 +12,7 @@
     "url": "git+https://github.com/Permissionless-Software-Foundation/bch-api.git"
   },
   "scripts": {
-    "start": "node ./src/app.js",
+    "start": "node --inspect ./src/app.js",
     "dev": "nodemon ./dist/app.js",
     "test": "npm run lint && npm run test-v4",
     "lint": "standard --env mocha --fix",
@@ -31,7 +31,7 @@
     "node": ">=10.15.1"
   },
   "dependencies": {
-    "@abcpros/bch-js": "^4.0.1",
+    "@abcpros/bch-js": "^4.0.2",
     "@abcpros/bitcore-lib-xpi": "^8.25.31",
     "apidoc": "^0.26.0",
     "axios": "^0.21.1",
