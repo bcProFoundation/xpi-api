@@ -56,14 +56,16 @@ export WHITELIST_DOMAINS=fullstack.cash,psfoundation.cash,torlist.cash
 # Rate Limits. Numbers are divided into 1000. e.g. 10000 / 500 = 20 RPM for ANON.
 # Requests use the ANON rate limit if they fail to pass in a JWT token.
 # ANON = 20 requests per minute (RPM)
-export ANON_RATE_LIMIT=500
+export ANON_RATE_LIMIT=50
 # 10 = 1000 RPM
-export WHITELIST_RATE_LIMIT=100
+export WHITELIST_RATE_LIMIT=10
 
 # Set logging parameters
 #1m means no more than 1 megabyte
 export LOG_MAX_SIZE=1m
 #5d means store no more than 5 days
 export LOG_MAX_FILES=5d
+
+export WHITELIST_DOMAINS=sendlotus.com
 
 npm start
