@@ -22,7 +22,7 @@ if (!process.env.SLPDB_URL) {
 const SLP = require('../../../src/routes/v4/slp')
 const slp = new SLP()
 
-const BCHJS = require('@abcpros/bch-js')
+const BCHJS = require('@abcpros/xpi-js')
 const bchjs = new BCHJS()
 
 const { mockReq, mockRes } = require('../mocks/express-mocks')

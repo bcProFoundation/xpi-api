@@ -11,7 +11,7 @@ const util = require('util')
 const bitcore = require('@abcpros/bitcore-lib-xpi')
 util.inspect.defaultOptions = { depth: 1 }
 
-const BCHJS = require('@abcpros/bch-js')
+const BCHJS = require('@abcpros/xpi-js')
 const bchjs = new BCHJS()
 
 // let _this

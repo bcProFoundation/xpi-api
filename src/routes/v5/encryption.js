@@ -16,7 +16,7 @@ const config = require('../../../config')
 const RouteUtils = require('../../util/route-utils')
 const routeUtils = new RouteUtils()
 
-const BCHJS = require('@abcpros/bch-js')
+const BCHJS = require('@abcpros/xpi-js')
 const restURL = process.env.LOCAL_RESTURL
   ? process.env.LOCAL_RESTURL
   : 'https://api.fullstack.cash/v4/'

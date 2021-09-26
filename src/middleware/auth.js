@@ -62,9 +62,9 @@ class AuthMW {
         password,
         done
       ) {
-        // console.log(`req: ${util.inspect(req)}`)
-        // console.log(`username: ${username}`)
-        // console.log(`password: ${password}`)
+        console.log(`req: ${util.inspect(req)}`)
+        console.log(`username: ${username}`)
+        console.log(`password: ${password}`)
 
         // Create the req.locals property if it does not yet exist.
         if (!req.locals) {

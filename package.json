@@ -1,6 +1,6 @@
 {
   "name": "bch-api",
-  "version": "1.16.0",
+  "version": "1.16.1",
   "description": "The REST API powering FullStack.cash",
   "author": "Chris Troutner <chris.troutner@gmail.com>",
   "contributors": [
@@ -13,6 +13,7 @@
   },
   "scripts": {
     "start": "node ./src/app.js",
+    "debug": "node --inspect ./src/app.js",
     "dev": "nodemon ./dist/app.js",
     "test": "npm run lint && npm run test-v4",
     "lint": "standard --env mocha --fix",
@@ -31,8 +32,8 @@
     "node": ">=10.15.1"
   },
   "dependencies": {
-    "@abcpros/bch-js": "^4.0.2",
-    "@abcpros/bitcore-lib-xpi": "^8.25.31",
+    "@abcpros/bitcore-lib-xpi": "^8.25.34",
+    "@abcpros/xpi-js": "^4.0.2",
     "apidoc": "^0.26.0",
     "axios": "^0.21.1",
     "body-parser": "^1.18.3",

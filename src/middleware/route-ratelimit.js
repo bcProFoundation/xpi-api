@@ -352,7 +352,7 @@ class RateLimits {
 
       if (ip.includes('127.0.0.1')) isInternal = true
 
-      if (ip.includes('172.17.')) isInternal = true
+      if (ip.includes('172.21.')) isInternal = true
 
       // TODO: Add 192.168.
 
