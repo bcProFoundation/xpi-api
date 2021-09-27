@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@abcpros/bitcore-lib-xpi": "^8.25.34",
-    "@abcpros/xpi-js": "^4.0.2",
+    "@abcpros/xpi-js": "^4.0.3",
     "apidoc": "^0.26.0",
     "axios": "^0.21.1",
     "body-parser": "^1.18.3",
