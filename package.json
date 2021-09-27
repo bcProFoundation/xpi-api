@@ -1,7 +1,7 @@
 {
-  "name": "bch-api",
+  "name": "xpi-api",
   "version": "1.16.1",
-  "description": "The REST API powering FullStack.cash",
+  "description": "The REST API for Lotus",
   "author": "Chris Troutner <chris.troutner@gmail.com>",
   "contributors": [
     "Gabriel Cardona <gabriel@bitcoin.com>"
